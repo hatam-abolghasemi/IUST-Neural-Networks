@@ -30,8 +30,11 @@ for _ in range(EPOCH):
         delta_B = B_tmp - B
         delta_W1 = W1_tmp - W1
         delta_W2 = W1_tmp - W2
-        print(f"        Difference:            ΔB={delta_B}, ΔW1={delta_W1}, ΔW2={delta_W2}")
+        #print(f"        Difference:            ΔB={delta_B}, ΔW1={delta_W1}, ΔW2={delta_W2}")
         print(f"        Y={y}")
+        out = 1 if y >= 0 else -1                               # Hard limiter step function
+        print(f"        out:                   {out}")
+        t[i] = out
         print(f"-----------------------------------------------------------------------")
         B = B_tmp
         W1 = W1_tmp
