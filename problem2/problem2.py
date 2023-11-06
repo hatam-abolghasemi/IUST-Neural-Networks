@@ -1,5 +1,6 @@
 import configparser
 import pandas as pd
+import numpy as np
 
 # Step 0: Initialization -----------------------------------------------------------------------------------------------
 config = configparser.ConfigParser()                        # Read the config.ini file
@@ -14,7 +15,7 @@ or_df = pd.read_csv('or.csv')                               # Read the or.csv fi
 x1 = or_df['x1'].values                                     # Get the values of x1, x2, and t from the DataFrame
 x2 = or_df['x2'].values
 t = or_df['t'].values
-# Step 2 Epochs --------------------------------------------------------------------------------------------------------
+# Step 1 Epochs --------------------------------------------------------------------------------------------------------
 for _ in range(EPOCH):
     print(f"Epoch {_ + 1}")
     print(f"-----------------------------------------------------------------------")
@@ -26,15 +27,25 @@ for _ in range(EPOCH):
         W1_tmp = W1 + (LEARNING_RATE * diff * x1[i])
         W2_tmp = W2 + (LEARNING_RATE * diff * x2[i])
         print(f"        Update in progress...")
+        print(f"        Y={y}")
         print(f"        Updated values:        B={B_tmp}, W1={W1_tmp}, W2={W2_tmp}")
         delta_B = B_tmp - B
         delta_W1 = W1_tmp - W1
         delta_W2 = W1_tmp - W2
-        #print(f"        Difference:            ΔB={delta_B}, ΔW1={delta_W1}, ΔW2={delta_W2}")
-        print(f"        Y={y}")
-        out = 1 if y >= 0 else -1                               # Hard limiter step function
-        print(f"        out:                   {out}")
+        # print(f"        Difference:            ΔB={delta_B}, ΔW1={delta_W1}, ΔW2={delta_W2}")
+        # DO NOT USE MULTIPLE ACTIVATION FUNCTIONS SIMULTANEOUSLY!
+        # Hard limiter step function
+        # out = 1 if y >= 0 else -1
+        # t[i] = out
+        # print(f"        Hard limiter:          {out}")
+        # ReLU
+        # out = max(0, y)
+        # t[i] = out
+        # print(f"        ReLU:                  {out}")
+        # Sigmoid
+        out = 1 / (1 + np.exp(-y))
         t[i] = out
+        print(f"        Sigmoid:               {out}")
         print(f"-----------------------------------------------------------------------")
         B = B_tmp
         W1 = W1_tmp
